@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Crystal Adike</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cream: #faf8f5;
+    --warm-white: #f5f2ed;
+    --blush: #e8c4b8;
+    --rose: #c9736a;
+    --deep-rose: #a85850;
+    --mauve: #8b6f6f;
+    --soft-mauve: #d4b5b5;
+    --ink: #1a1210;
+    --ink-light: #3d2e2e;
+    --muted: #7a6060;
+    --line: rgba(139,111,111,0.18);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 4rem;
+    background: rgba(250,248,245,0.9); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.04em; color: var(--ink); text-decoration: none; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.25s; }
+  .nav-links a:hover { color: var(--rose); }
+
+  /* ── HERO ── */
+  #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 4rem; position: relative; overflow: hidden; }
+  .hero-bg-circle { position: absolute; border-radius: 50%; pointer-events: none; }
+  .hero-bg-circle.c1 { width: 620px; height: 620px; background: radial-gradient(circle, rgba(201,115,106,0.1) 0%, transparent 70%); top: -120px; right: -120px; animation: float 8s ease-in-out infinite; }
+  .hero-bg-circle.c2 { width: 420px; height: 420px; background: radial-gradient(circle, rgba(212,181,181,0.12) 0%, transparent 70%); bottom: 40px; left: -100px; animation: float 11s ease-in-out infinite reverse; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-28px)} }
+
+  .hero-eyebrow { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--rose); margin-bottom: 1.2rem; opacity: 0; animation: fadeUp 0.8s 0.2s forwards; }
+  .hero-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(4rem,9vw,8rem); font-weight: 300; line-height: 0.95; color: var(--ink); opacity: 0; animation: fadeUp 0.9s 0.4s forwards; }
+  .hero-name span { font-style: italic; color: var(--rose); }
+
+  .hero-tagline { margin-top: 2rem; font-size: 1.05rem; font-weight: 300; color: var(--ink-light); max-width: 540px; line-height: 1.85; opacity: 0; animation: fadeUp 0.9s 0.6s forwards; }
+
+  .hero-pills { margin-top: 1.8rem; display: flex; gap: 0.55rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.9s 0.75s forwards; }
+  .hero-pill { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rose); border: 1px solid rgba(201,115,106,0.3); padding: 0.38rem 0.95rem; border-radius: 20px; background: rgba(201,115,106,0.05); }
+
+  .hero-cta { margin-top: 2.8rem; display: flex; gap: 1.2rem; align-items: center; opacity: 0; animation: fadeUp 0.9s 0.9s forwards; }
+  .btn-primary { display: inline-block; padding: 0.9rem 2.4rem; background: var(--rose); color: #fff; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: background 0.25s, transform 0.2s; }
+  .btn-primary:hover { background: var(--deep-rose); transform: translateY(-2px); }
+  .btn-ghost { display: inline-block; padding: 0.9rem 2.4rem; border: 1px solid var(--soft-mauve); color: var(--mauve); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: border-color 0.25s, color 0.25s, transform 0.2s; }
+  .btn-ghost:hover { border-color: var(--rose); color: var(--rose); transform: translateY(-2px); }
+
+  .hero-socials { position: absolute; right: 4rem; bottom: 4rem; display: flex; flex-direction: column; gap: 1.2rem; align-items: center; opacity: 0; animation: fadeIn 1s 1.3s forwards; }
+  .hero-socials::before { content: ''; display: block; width: 1px; height: 60px; background: var(--soft-mauve); margin-bottom: 0.5rem; }
+  .social-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--line); border-radius: 50%; color: var(--muted); text-decoration: none; transition: all 0.25s; background: rgba(255,255,255,0.5); }
+  .social-icon:hover { border-color: var(--rose); color: var(--rose); background: rgba(201,115,106,0.08); transform: scale(1.1); }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+  /* ── SECTIONS ── */
+  section { padding: 7rem 4rem; position: relative; }
+  section:nth-child(even) { background: var(--warm-white); }
+  .section-label { font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--rose); margin-bottom: 0.8rem; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,4vw,3.2rem); font-weight: 300; line-height: 1.15; color: var(--ink); margin-bottom: 3rem; }
+  .section-title em { font-style: italic; color: var(--rose); }
+
+  /* ── ABOUT ── */
+  #about .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; max-width: 1100px; }
+  .about-text p { font-size: 1.02rem; font-weight: 300; color: var(--ink-light); line-height: 1.9; margin-bottom: 1.3rem; }
+  .about-text strong { font-weight: 500; color: var(--rose); }
+  .about-cards { display: flex; flex-direction: column; gap: 1rem; }
+  .about-card { background: #fff; border: 1px solid var(--line); border-radius: 4px; padding: 1.8rem; position: relative; overflow: hidden; }
+  .about-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: linear-gradient(to bottom, var(--blush), var(--rose)); }
+  .about-card-label { font-size: 0.63rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+  .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .stat-item { display: flex; flex-direction: column; gap: 0.25rem; }
+  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 600; color: var(--rose); line-height: 1; }
+  .stat-label { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
+  .focus-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .focus-tag { font-size: 0.75rem; color: var(--ink-light); border: 1px solid var(--line); padding: 0.38rem 0.9rem; border-radius: 20px; background: rgba(201,115,106,0.04); }
+
+  /* ── EXPERIENCE ── */
+  #experience .exp-list { max-width: 860px; }
+  .exp-item { display: grid; grid-template-columns: 180px 1fr; gap: 3.5rem; padding: 3rem 0; border-bottom: 1px solid var(--line); }
+  .exp-item:first-of-type { border-top: 1px solid var(--line); }
+  .exp-date { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--rose); text-transform: uppercase; margin-bottom: 0.4rem; }
+  .exp-location { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
+  .exp-role { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 400; color: var(--ink); margin-bottom: 0.25rem; line-height: 1.2; }
+  .exp-company { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mauve); margin-bottom: 0.9rem; }
+  .exp-narrative { font-size: 0.9rem; font-weight: 300; color: var(--ink-light); line-height: 1.85; margin-bottom: 1.1rem; }
+  .exp-narrative strong { font-weight: 500; color: var(--ink); }
+  .exp-highlights { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .exp-highlights li { font-size: 0.84rem; font-weight: 300; color: var(--muted); line-height: 1.65; padding-left: 1.2rem; position: relative; }
+  .exp-highlights li::before { content: '◦'; position: absolute; left: 0; color: var(--blush); font-size: 0.9rem; }
+
+  /* ── PROJECTS ── */
+  #projects .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; max-width: 1100px; }
+  .project-card { background: #fff; border: 1px solid var(--line); border-radius: 4px; padding: 2.2rem; transition: transform 0.3s, box-shadow 0.3s; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+  .project-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(to right, var(--blush), var(--rose)); transform: scaleX(0); transform-origin: left; transition: transform 0.35s; }
+  .project-card:hover { transform: translateY(-5px); box-shadow: 0 18px 44px rgba(139,111,111,0.11); }
+  .project-card:hover::after { transform: scaleX(1); }
+  .project-tag { display: inline-block; font-size: 0.63rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rose); background: rgba(201,115,106,0.08); padding: 0.3rem 0.7rem; border-radius: 2px; margin-bottom: 1rem; width: fit-content; }
+  .project-title { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 400; color: var(--ink); margin-bottom: 0.9rem; line-height: 1.25; }
+  .project-desc { font-size: 0.86rem; font-weight: 300; color: var(--muted); line-height: 1.75; flex: 1; }
+  .project-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 1.3rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+  .project-award { display: flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; color: var(--rose); }
+  .project-award::before { content: '★'; font-size: 0.65rem; }
+  .project-link { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mauve); text-decoration: none; border-bottom: 1px solid var(--soft-mauve); padding-bottom: 1px; transition: color 0.2s, border-color 0.2s; }
+  .project-link:hover { color: var(--rose); border-color: var(--rose); }
+
+  /* ── SKILLS ── */
+  #skills .skills-layout { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; max-width: 900px; }
+  .skill-group-title { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .skill-tag { font-size: 0.82rem; font-weight: 300; color: var(--ink-light); border: 1px solid var(--line); padding: 0.45rem 1rem; border-radius: 2px; transition: all 0.25s; background: rgba(255,255,255,0.7); }
+  .skill-tag:hover { border-color: var(--rose); color: var(--rose); background: rgba(201,115,106,0.04); }
+
+  /* ── LEARNING BANNER ── */
+  #learning {
+    background: var(--ink); color: #fff; padding: 5rem 4rem;
+  }
+  #learning .section-label { color: var(--blush); }
+  #learning .section-title { color: #fff; margin-bottom: 1rem; }
+  #learning .section-title em { color: var(--blush); }
+  .learning-sub { font-size: 1rem; font-weight: 300; color: rgba(255,255,255,0.6); max-width: 600px; line-height: 1.85; margin-bottom: 3rem; }
+  .learning-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 900px; }
+  .learning-card { border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 1.8rem; transition: border-color 0.3s, background 0.3s; }
+  .learning-card:hover { border-color: rgba(232,196,184,0.35); background: rgba(255,255,255,0.03); }
+  .learning-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+  .learning-card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 400; color: #fff; margin-bottom: 0.5rem; }
+  .learning-card-text { font-size: 0.82rem; font-weight: 300; color: rgba(255,255,255,0.5); line-height: 1.65; }
+
+  /* ── CURRENTLY ── */
+  #currently { padding: 5rem 4rem; }
+  .currently-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 900px; }
+  .currently-card { border: 1px solid var(--line); border-radius: 4px; padding: 1.8rem; background: #fff; transition: border-color 0.3s; }
+  .currently-card:hover { border-color: var(--soft-mauve); }
+  .currently-icon { font-size: 1.4rem; margin-bottom: 1rem; }
+  .currently-label { font-size: 0.63rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rose); margin-bottom: 0.5rem; }
+  .currently-val { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 300; color: var(--ink); line-height: 1.5; }
+
+  /* ── CONTACT ── */
+  #contact { text-align: center; background: var(--warm-white); }
+  .contact-sub { font-size: 0.95rem; font-weight: 300; color: var(--muted); margin: 0 auto 3rem; max-width: 460px; line-height: 1.8; }
+  .contact-links { display: flex; justify-content: center; gap: 1.2rem; flex-wrap: wrap; margin-bottom: 4rem; }
+  .contact-link { display: flex; align-items: center; gap: 0.6rem; font-size: 0.8rem; letter-spacing: 0.06em; color: var(--muted); text-decoration: none; padding: 0.85rem 1.8rem; border: 1px solid var(--line); border-radius: 2px; background: #fff; transition: all 0.25s; }
+  .contact-link:hover { border-color: var(--rose); color: var(--rose); background: rgba(201,115,106,0.04); }
+  .footer-note { font-size: 0.7rem; color: rgba(26,18,16,0.22); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── CURSOR ── */
+  .cursor-dot { width: 6px; height: 6px; background: var(--rose); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); }
+  .cursor-ring { width: 32px; height: 32px; border: 1px solid rgba(201,115,106,0.45); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: width 0.2s, height 0.2s, border-color 0.2s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    section, #learning, #currently, #contact { padding: 5rem 1.5rem; }
+    #hero { padding: 0 1.5rem; }
+    #about .about-grid, #skills .skills-layout, .learning-grid, .currently-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    .hero-socials { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="dot"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">CA</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-circle c1"></div>
+  <div class="hero-bg-circle c2"></div>
+  <p class="hero-eyebrow">Fintech · Product · Engineering · Data</p>
+  <h1 class="hero-name">Crystal<br/><span>Adike</span></h1>
+  <p class="hero-tagline">CS & Economics student at Baylor University. I build things, figure out why they matter, and keep learning until I can build them better — whether that's a data product, a financial tool, or a full-stack application.</p>
+  <div class="hero-pills">
+    <span class="hero-pill">Product Management</span>
+    <span class="hero-pill">Fintech</span>
+    <span class="hero-pill">Software Engineering</span>
+    <span class="hero-pill">Machine Learning</span>
+    <span class="hero-pill">Data</span>
+  </div>
+  <div class="hero-cta">
+    <a href="#projects" class="btn-primary">See My Work</a>
+    <a href="#contact" class="btn-ghost">Let's Talk</a>
+  </div>
+  <div class="hero-socials">
+    <a href="https://linkedin.com/in/crystaladike" target="_blank" class="social-icon" title="LinkedIn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+    </a>
+    <a href="https://github.com/cryscode" target="_blank" class="social-icon" title="GitHub">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+    </a>
+    <a href="mailto:crystaladike@gmail.com" class="social-icon" title="Email">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label reveal">About</p>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <h2 class="section-title">I build things.<br/>I figure out <em>why they matter.</em></h2>
+      <p>I'm Crystal — a <strong>CS & Economics student at Baylor University</strong> with a genuine obsession with understanding how technology creates value in the real world. I'm drawn to the places where code meets decision-making: fintech, product strategy, data systems, and everything in between.</p>
+      <p>What makes me a little different is that I don't just want to sit on one side of the table. I've <strong>shipped products, written the code, run the research, and led the team</strong> — sometimes all at once. That breadth isn't a distraction; it's how I build things that actually work for the people using them.</p>
+      <p>I'm endlessly curious. Whether it's a new framework, a financial concept, or a completely unfamiliar problem space — I'm the kind of person who figures it out, and then figures out how to do it better.</p>
+    </div>
+    <div class="about-visual reveal">
+      <div class="about-cards">
+        <div class="about-card">
+          <p class="about-card-label">Impact at a glance</p>
+          <div class="stat-row">
+            <div class="stat-item"><span class="stat-num">2M+</span><span class="stat-label">Messages dispatched via platform I managed</span></div>
+            <div class="stat-item"><span class="stat-num">500+</span><span class="stat-label">Beta users onboarded through data-informed rollout</span></div>
+            <div class="stat-item"><span class="stat-num">$5K+</span><span class="stat-label">Raised through community leadership</span></div>
+            <div class="stat-item"><span class="stat-num">30+</span><span class="stat-label">Large-scale events managed end-to-end</span></div>
+          </div>
+        </div>
+        <div class="about-card">
+          <p class="about-card-label">Open to roles in</p>
+          <div class="focus-tags">
+            <span class="focus-tag">Financial Technology</span>
+            <span class="focus-tag">Product Management</span>
+            <span class="focus-tag">Software Engineering</span>
+            <span class="focus-tag">Data & ML</span>
+            <span class="focus-tag">Product Analytics</span>
+            <span class="focus-tag">Full-Stack Dev</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <p class="section-label reveal">Experience</p>
+  <h2 class="section-title reveal">How I've<br/><em>shown up</em></h2>
+  <div class="exp-list">
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <p class="exp-date">Aug – Dec 2025</p>
+        <p class="exp-location">Lagos, Nigeria</p>
+      </div>
+      <div>
+        <p class="exp-role">Project Manager & Product Designer</p>
+        <p class="exp-company">JXTCOMM</p>
+        <p class="exp-narrative">
+          At JXTCOMM, I stepped into the full scope of what it means to own a product. I wasn't just managing tasks — I was setting the vision, aligning a cross-functional team, and making the kind of judgment calls that determine whether a product actually ships. The platform we built handled <strong>automated messaging and event coordination at scale</strong>, eventually dispatching over 2 million messages across high-traffic events. That scale required both technical clarity and constant product thinking.
+        </p>
+        <ul class="exp-highlights">
+          <li>Translated user research and technical architecture into a data-informed pitch deck that secured stakeholder alignment and drove a structured beta rollout to 500+ users.</li>
+          <li>Managed delivery timelines and milestone tracking across disciplines — design, engineering, and comms — ensuring the product launched on time without sacrificing quality.</li>
+          <li>Built the feedback loops that made the product smarter over time, not just functional at launch.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <p class="exp-date">Sep 2023 – Jul 2024</p>
+        <p class="exp-location">Ogun, Nigeria</p>
+      </div>
+      <div>
+        <p class="exp-role">Student Council VP & Technical Team Member</p>
+        <p class="exp-company">Christ The Redeemer's College</p>
+        <p class="exp-narrative">
+          Long before I had the title of "product manager," I was already doing the work: understanding what people needed, making the case to decision-makers, and executing at scale. As VP of Student Council, I represented over 200 students in formal discussions with faculty — advocating for real changes to facilities and academic systems and actually getting them. In parallel, I ran the technical operations for 30+ large-scale events, each with 200+ attendees, where there was no room for error.
+        </p>
+        <ul class="exp-highlights">
+          <li>Led 10+ campus initiatives from ideation to execution, coordinating volunteer teams and structured feedback channels across the student body.</li>
+          <li>Operated in a dual role — strategic advocate and technical operator — developing the ability to move fluidly between thinking and doing.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label reveal">Projects & Leadership</p>
+  <h2 class="section-title reveal">What I've<br/><em>built</em></h2>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <span class="project-tag">Product · Climate Tech · Web App</span>
+      <h3 class="project-title">EcoShield</h3>
+      <p class="project-desc">A climate-monitoring web app I led from concept through multiple rounds of global competition. I owned the product roadmap, coordinated the team, and made sure we were building for real users — not just for judges. The fact that we made it to global semifinals wasn't luck; it was the result of treating user validation as seriously as we treated the code.</p>
+      <div class="project-footer"><span class="project-award">Technovation Girls — Global Semifinals</span></div>
+    </div>
+
+    <div class="project-card reveal">
+      <span class="project-tag">Machine Learning · Sustainability</span>
+      <h3 class="project-title">ML Waste Sorting System</h3>
+      <p class="project-desc">I built a real-time ML classification model that identifies plastics, metals, glass, paper, and organic waste from a live camera feed. This wasn't a toy project — it's live, it works, and it demonstrates exactly the kind of applied ML thinking I bring to data problems: start with the real-world impact, then figure out the model.</p>
+      <div class="project-footer"><a href="https://gwqntv.csb.app/" target="_blank" class="project-link">Try it live →</a></div>
+    </div>
+
+    <div class="project-card reveal">
+      <span class="project-tag">Hardware · Systems · Engineering</span>
+      <h3 class="project-title">Speed Limiter System</h3>
+      <p class="project-desc">Designed and built a vehicle speed-limiting system that went on to compete at the SAGE National Competition. This project pushed me into hardware territory I hadn't explored before — and I loved it. It reinforced something I believe deeply: if the problem is interesting enough, I will learn whatever it takes to solve it.</p>
+      <div class="project-footer"><span class="project-award">Best in Educational Category — SAGE</span></div>
+    </div>
+
+    <div class="project-card reveal">
+      <span class="project-tag">Community · Operations · Impact</span>
+      <h3 class="project-title">Konigbagbe Kids Outreach</h3>
+      <p class="project-desc">Led a community outreach initiative that raised over $5,000 and delivered education, clean water, and electricity access to 200+ children. I coordinated multiple teams, managed donor relationships, and kept the operation running across several overlapping projects. The skills here — resource allocation, stakeholder trust, accountability under pressure — transfer directly into any high-growth team.</p>
+      <div class="project-footer"><span class="project-award">$5K+ Raised · 200+ Children Supported</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="section-label reveal">Skills</p>
+  <h2 class="section-title reveal">My<br/><em>toolkit</em></h2>
+  <div class="skills-layout">
+    <div class="reveal">
+      <p class="skill-group-title">Languages & Engineering</p>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">C++</span>
+        <span class="skill-tag">Java</span>
+        <span class="skill-tag">HTML / CSS</span>
+        <span class="skill-tag">Git / GitHub</span>
+      </div>
+    </div>
+    <div class="reveal">
+      <p class="skill-group-title">Product & PM</p>
+      <div class="skill-tags">
+        <span class="skill-tag">Product Strategy</span>
+        <span class="skill-tag">User Research</span>
+        <span class="skill-tag">Roadmapping</span>
+        <span class="skill-tag">Go-to-Market</span>
+        <span class="skill-tag">Stakeholder Management</span>
+      </div>
+    </div>
+    <div class="reveal">
+      <p class="skill-group-title">Data & ML</p>
+      <div class="skill-tags">
+        <span class="skill-tag">Machine Learning</span>
+        <span class="skill-tag">Data Visualization</span>
+        <span class="skill-tag">Analytics</span>
+        <span class="skill-tag">Teachable Machine</span>
+      </div>
+    </div>
+    <div class="reveal">
+      <p class="skill-group-title">Leadership & Operations</p>
+      <div class="skill-tags">
+        <span class="skill-tag">Cross-functional Teams</span>
+        <span class="skill-tag">Event Management</span>
+        <span class="skill-tag">Project Delivery</span>
+        <span class="skill-tag">Community Building</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEARNING BANNER -->
+<section id="learning">
+  <p class="section-label reveal">Mindset</p>
+  <h2 class="section-title reveal">Always <em>curious.</em><br/>Always learning.</h2>
+  <p class="learning-sub reveal">I don't think of myself as locked into one lane. I'm a builder who happens to care about business outcomes, a strategist who can read the code, and someone who gets genuinely excited about picking up something new. If the role is interesting and the problem is real — I'm in.</p>
+  <div class="learning-grid">
+    <div class="learning-card reveal">
+      <div class="learning-icon">⚙️</div>
+      <p class="learning-card-title">Software Engineering</p>
+      <p class="learning-card-text">I write code and I enjoy it. Python, JavaScript, C++, Java — I'm comfortable across the stack and always building something new to sharpen the craft.</p>
+    </div>
+    <div class="learning-card reveal">
+      <div class="learning-icon">📊</div>
+      <p class="learning-card-title">Data & Analytics</p>
+      <p class="learning-card-text">I think in data. From ML classification models to analytics-informed product decisions, I like to understand what the numbers are actually saying.</p>
+    </div>
+    <div class="learning-card reveal">
+      <div class="learning-icon">💡</div>
+      <p class="learning-card-title">Product & Fintech</p>
+      <p class="learning-card-text">Where I want to go: technology that reshapes how people interact with money, systems, and decisions. Strategy + execution + obsessive user empathy.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CURRENTLY -->
+<section id="currently">
+  <p class="section-label reveal">Right Now</p>
+  <h2 class="section-title reveal">What I'm<br/><em>up to</em></h2>
+  <div class="currently-grid">
+    <div class="currently-card reveal">
+      <div class="currently-icon">🎓</div>
+      <p class="currently-label">Studying</p>
+      <p class="currently-val">CS & Economics at Baylor University — where code meets capital</p>
+    </div>
+    <div class="currently-card reveal">
+      <div class="currently-icon">🔍</div>
+      <p class="currently-label">Looking For</p>
+      <p class="currently-val">Internships in fintech, PM, SWE, and data — open to wherever the best problems are</p>
+    </div>
+    <div class="currently-card reveal">
+      <div class="currently-icon">🌍</div>
+      <p class="currently-label">Background</p>
+      <p class="currently-val">Shipped real products in Nigeria. Bringing a global, user-first perspective to every team I join.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label reveal">Contact</p>
+  <h2 class="section-title reveal">Let's build<br/><em>something great</em></h2>
+  <p class="contact-sub reveal">Whether it's a full-time role, an internship, a collaboration, or just a good conversation about fintech and product — I'd love to connect.</p>
+  <div class="contact-links">
+    <a href="mailto:crystaladike@gmail.com" class="contact-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+      crystaladike@gmail.com
+    </a>
+    <a href="https://linkedin.com/in/crystaladike" target="_blank" class="contact-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      linkedin.com/in/crystaladike
+    </a>
+    <a href="https://github.com/cryscode" target="_blank" class="contact-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+      github.com/cryscode
+    </a>
+  </div>
+  <p class="footer-note">Crystal Adike · CS & Economics · Baylor University ✦</p>
+</section>
+
+<script>
+  const dot = document.getElementById('dot');
+  const ring = document.getElementById('ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+  });
+  (function animateRing() {
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  })();
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.width='50px'; ring.style.height='50px'; ring.style.borderColor='rgba(201,115,106,0.7)'; });
+    el.addEventListener('mouseleave', () => { ring.style.width='32px'; ring.style.height='32px'; ring.style.borderColor='rgba(201,115,106,0.45)'; });
+  });
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
