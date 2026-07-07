@@ -189,7 +189,7 @@ section:nth-child(even) { background: var(--warm-white); }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 4rem;
+  padding: 6rem 4rem 0;
   position: relative;
   overflow: hidden;
 }
@@ -818,7 +818,7 @@ section:nth-child(even) { background: var(--warm-white); }
   #currently,
   #contact { padding: 5rem 1.5rem; }
 
-  #hero { padding: 0 1.5rem; }
+  #hero { padding: 6rem 1.5rem 0; }
 
   #about .about-grid,
   #skills .skills-layout,
